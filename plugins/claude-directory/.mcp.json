@@ -1,8 +1,9 @@
 {
   "mcpServers": {
-    "uizze": {
-      "type": "http",
-      "url": "https://uizze.com/mcp"
+    "ui-reference": {
+      "type": "stdio",
+      "command": "ui-reference-mcp",
+      "args": []
     }
   }
 }

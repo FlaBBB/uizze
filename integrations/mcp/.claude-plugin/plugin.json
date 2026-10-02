@@ -1,12 +1,13 @@
 {
   "name": "uizze",
   "version": "1.2.14",
-  "description": "Connect Claude Code to UIZZE's focused UI references and hosted materials.",
+  "description": "UI design workflow with Mobbin references and Google Fonts/Iconify materials",
   "author": {
-    "name": "UIZZE",
-    "url": "https://uizze.com"
+    "name": "FlaBBB",
+    "url": "https://github.com/FlaBBB/uizze"
   },
-  "homepage": "https://uizze.com/docs",
+  "homepage": "https://github.com/FlaBBB/uizze",
+  "repository": "https://github.com/FlaBBB/uizze",
   "keywords": [
     "ui",
     "design",

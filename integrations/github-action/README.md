@@ -4,8 +4,6 @@
 state markers, color drift, and generic dashboard cues before the next review.
 Free, dependency-free, and local to your GitHub runner.
 
-![Stop Making UI Slop with UIZZE](https://uizze.com/landing/anti-ui-slop-skill-banner.png)
-
 [**Inspect the live example →**](https://github.com/uizze/uizze/actions/workflows/ui-slop-gate-example.yml) · [Add it to your repository](#usage) · [Work through the findings](../../examples/agent-workflows.md)
 
 ## What it catches
@@ -67,7 +65,7 @@ as a warning annotation and keeps the Action step successful.
 | `files` | changed frontend files | Optional comma- or newline-separated local paths. |
 | `manifest` | none | Optional path to local evidence JSON. |
 | `fail-on` | `error` | Fail on `error`, `warning`, or `never`. |
-| `show-uizze-link` | `true` | Link to free agent workflows and optional reference search after scan results. Set `false` to omit links. |
+| `show-uizze-link` | `true` | Include this published Action's upstream workflow/reference links in the job summary. Set `false` to omit them; they are not a connection to this fork's local MCP. |
 | `max-files` | `200` | Scan cap, limited internally to 1–1000. |
 
 Each file is capped at 1 MiB. Generated, dependency, build, and vendor folders are ignored. Explicit paths are also constrained to the checked-out workspace.
@@ -85,8 +83,22 @@ These are source-check examples, not a rendered application or a visual-quality
 score. For your next UI task, try the [free agent workflows](../../examples/agent-workflows.md)
 for billing settings, permission screens, or data tables.
 
-Need product-specific reference screens while fixing a finding? Optional UIZZE
-reference search is available separately at [uizze.com](https://uizze.com/?utm_source=github&utm_medium=repository&utm_campaign=discovery&utm_content=action_readme).
+## Optional local reference and material search
+
+If an implementation task needs optional outside evidence, install and connect
+the fork's local stdio server:
+
+```bash
+npx --yes --package 'git+https://github.com/FlaBBB/uizze.git#ui-reference-mcp-v1.0.0' ui-reference-mcp install
+```
+
+The connection key is `ui-reference`. Rerun `~/.local/bin/ui-reference-mcp setup` to repeat
+provider onboarding or repair selected global connections (the prefix may differ via `UI_REFERENCE_INSTALL_PREFIX`; with `<prefix>/bin` on `PATH`, the bare `ui-reference-mcp` name also works). Use
+`~/.local/bin/ui-reference-mcp auth mobbin` for browser consent, `~/.local/bin/ui-reference-mcp auth google-fonts` for the masked Google Fonts key prompt, and
+`~/.local/bin/ui-reference-mcp auth iconify` to check public no-key icon search. The local
+server exposes `find_ui_references` (Mobbin) and `find_ui_materials` (Google
+Fonts or Iconify); see the [integration guide](../mcp/) for exact schemas and
+citations. The Action itself remains independent of this optional MCP.
 
 ## Optional review evidence
 
@@ -124,11 +136,11 @@ npm run verify
 
 `npm run build` copies the dependency-free source tree into `dist/`. Any release must include the rebuilt `dist/` because GitHub Actions does not run an install or build step for consumers.
 
-Release verification lives in the canonical UIZZE repository so the Action and its tests are versioned together.
+The Action is a published upstream artifact. Its original release verification lives in the canonical Uizze repository so the Action and its tests are versioned together.
 
 ## Privacy and security
 
-The runtime reads only local event metadata, Git history, explicitly selected source files, and an optional local manifest. It contains no HTTP client and performs no network transmission. See [SECURITY.md](SECURITY.md) for reporting and hardening guidance.
+The runtime reads only local event metadata, Git history, explicitly selected source files, and an optional local manifest. It contains no HTTP client and performs no network transmission. For fork security coordination, see the [root security policy](../../SECURITY.md).
 
 ## License
 

@@ -2,12 +2,11 @@
 
 # Stop Making UI Slop
 
-Build product-specific UI with the free anti-ui-slop skill. Optional focused
-UIZZE references are available separately at [uizze.com](https://uizze.com).
+Build product-specific UI with the free anti-ui-slop skill. Optional reference
+and materials search uses the fork's local MCP server; see
+[`docs/mcp.md`](docs/mcp.md).
 
-![Stop Making UI Slop with UIZZE](https://uizze.com/landing/anti-ui-slop-skill-banner.png)
-
-## UIZZE Agent UI Starter
+## Uizze Agent UI Starter
 
 **STOP UI SLOP before it hits `main`.**
 
@@ -15,19 +14,19 @@ A small, real Next.js starter for teams building interfaces with Codex, Claude
 Code, Cursor, or another coding agent. It gives every agent the same product
 contract, the same required UI states, and the same finish gate.
 
-No UIZZE account is required. The bundled skill, design-contract workflow, and
-GitHub Action are free to use.
+No account or MCP connection is required. The bundled skill,
+design-contract workflow, and GitHub Action are free to use.
 
 ## Start in five minutes
 
 Use Node.js 24 and npm. The complete validation runs in
-[GitHub Actions](https://github.com/uizze/uizze/actions/workflows/starter-validation.yml)
+[GitHub Actions](https://github.com/FlaBBB/uizze/actions/workflows/starter-validation.yml)
 on changes to this starter.
 
-Clone the canonical repository and copy the starter:
+Clone this fork and copy the starter:
 
 ```bash
-git clone https://github.com/uizze/uizze.git
+git clone https://github.com/FlaBBB/uizze.git
 cp -R uizze/integrations/nextjs-starter my-product
 cd my-product
 npm ci
@@ -50,7 +49,7 @@ Then:
 - a bundled free anti-ui-slop skill for Codex and Claude Code;
 - workspace rules for Codex, Claude Code, Cursor, and GitHub Copilot;
 - an explicit design-contract template and filled example;
-- `uizze/uizze@v1` running locally inside GitHub Actions;
+- the published `uizze/uizze@v1` Action running inside GitHub Actions;
 - deterministic checks that fail if the contract, skill, evidence, or workflow is removed.
 
 The Action is a conservative source check. It does not upload source or claim to
@@ -81,13 +80,27 @@ npm run validate
 
 See [docs/finish-gate.md](docs/finish-gate.md) for the review checklist.
 
-## Optional UIZZE MCP
+## Optional local MCP
 
-The starter works without MCP. If a concrete unresolved question would benefit
-from focused references or hosted materials, see [docs/mcp.md](docs/mcp.md).
-Keep the token in your environment; the repository contains placeholders only.
+The starter works without MCP. To install the local runtime, set up providers,
+and create the global `ui-reference` stdio connection for omp, Codex, Claude
+Code, and Cursor, run:
 
-The full UIZZE workflow is available at [uizze.com](https://uizze.com).
+```bash
+npx --yes --package 'git+https://github.com/FlaBBB/uizze.git#ui-reference-mcp-v1.0.0' ui-reference-mcp install
+```
+
+Rerun `~/.local/bin/ui-reference-mcp setup` to repeat onboarding or repair selected
+connections (the prefix may differ via `UI_REFERENCE_INSTALL_PREFIX`; with `<prefix>/bin` on `PATH`, the bare `ui-reference-mcp` name also works). Use `~/.local/bin/ui-reference-mcp auth mobbin` for browser consent,
+`~/.local/bin/ui-reference-mcp auth google-fonts` for the masked API-key prompt, and
+`~/.local/bin/ui-reference-mcp auth iconify` for public no-key icon search. The two tools
+are `find_ui_references` (Mobbin) and `find_ui_materials` (Google Fonts or
+Iconify). Credentials are handled by the CLI and kept outside the project; do
+not add keys or tokens to `.env` files. See [`docs/mcp.md`](docs/mcp.md) for
+the provider flow and tool details.
+
+This starter is retained from the original Uizze upstream project. Its
+published Action reference and MIT license are unchanged.
 
 ## License
 

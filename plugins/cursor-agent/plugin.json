@@ -1,15 +1,14 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "uizze",
-  "description": "UI design that stands out",
+  "description": "UI design workflow with Mobbin references and Google Fonts/Iconify materials",
   "version": "1.3.0",
   "author": {
-    "name": "Uizze",
-    "email": "business@uizze.com",
-    "url": "https://uizze.com"
+    "name": "FlaBBB",
+    "url": "https://github.com/FlaBBB/uizze"
   },
-  "homepage": "https://uizze.com/?utm_source=cursor&utm_medium=plugin_marketplace&utm_campaign=cursor_plugin_v1",
-  "repository": "https://github.com/uizze/uizze",
+  "homepage": "https://github.com/FlaBBB/uizze",
+  "repository": "https://github.com/FlaBBB/uizze",
   "license": "MIT",
   "keywords": [
     "ui",

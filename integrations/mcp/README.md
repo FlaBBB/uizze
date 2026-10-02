@@ -1,276 +1,118 @@
-# Uizze MCP
+# UI Reference MCP
 
-The hosted MCP gives coding agents focused access to full-screen UI references
-and Uizze-hosted design materials. It is intentionally small and may return no
-results when weak evidence would be worse than no evidence.
+This fork provides a local stdio MCP server for optional UI reference and material search. It exposes exactly two tools: `find_ui_references` (Mobbin) and `find_ui_materials` (Google Fonts or Iconify). There is no hosted HTTP MCP endpoint; cloud-only remote clients cannot run this server.
 
-## Connect
+## Install and connect
 
-Choose your client below. The free skill works without an account; the remote
-MCP requires a Uizze account with paid access.
-
-[Claude Code](#claude-code) · [Cursor](#cursor) · [Cline](#cline) · [Gemini CLI](#gemini-cli) ·
-[VS Code / Copilot](#vs-code--github-copilot) · [Antigravity](#antigravity) ·
-[Windsurf / Cascade](#windsurf--cascade) · [Zed](#zed) · [v0](#v0)
-
-### Codex with an agent token
-
-Create an agent token at [uizze.com](https://uizze.com), then store it in your
-client's secret or environment configuration. Never commit it.
+The one-command installer sets up the durable local runtime, skills, provider onboarding, and global agent connections. Node.js 24 or newer is required.
 
 ```bash
-export UIZZE_AGENT_TOKEN="uizze_at_your_token"
-codex mcp add uizze --url https://uizze.com/mcp --bearer-token-env-var UIZZE_AGENT_TOKEN
+npx --yes --package 'git+https://github.com/FlaBBB/uizze.git#ui-reference-mcp-v1.0.0' ui-reference-mcp install
 ```
+The durable terminal binary is `<prefix>/bin/ui-reference-mcp` (by default, `~/.local/bin/ui-reference-mcp`). Set `UI_REFERENCE_INSTALL_PREFIX` to choose a different prefix; the installer prints the exact path. The bare `ui-reference-mcp` name works only when `<prefix>/bin` is on `PATH`.
 
-The server exposes exactly two tools:
+Installation is global by default and targets omp, Codex, Claude Code, and Cursor. It installs or reuses the requested skills, then writes the local `ui-reference` stdio connection for the selected agent targets. It does not install the agent applications themselves. Credentials are saved in the user config directory (by default `~/.config/ui-reference-mcp`, or `${XDG_CONFIG_HOME}/ui-reference-mcp` when `XDG_CONFIG_HOME` is set), never in the repository or chat.
 
-- `find_ui_references` — find or inspect up to three active full-screen references.
-- `find_ui_materials` — find up to three hosted fonts, icons, animated icons,
-  or explicitly requested packs.
+The installer prompts locally when authorization is needed:
 
-Use the product and its existing design system first. Retrieve evidence only
-for a concrete unresolved question, and do not retry an empty result.
+- Mobbin opens a browser consent flow and returns to a loopback callback. Reference search requires a Mobbin Pro, Team, or Enterprise account.
+- Google Fonts asks for a Developer API key in a masked terminal prompt and validates it before saving. Do not pass the key in a command argument or put it in an MCP request.
+- Iconify is public and requires no key.
 
-## Claude Code
-
-From your project directory, add Uizze as a remote HTTP server:
+Rerun provider onboarding or repair selected global connections without reinstalling skills:
 
 ```bash
-claude mcp add --transport http uizze https://uizze.com/mcp
+~/.local/bin/ui-reference-mcp setup
 ```
 
-Open Claude Code, run `/mcp`, select `uizze`, and complete the browser sign-in.
-If you already configured a server named `uizze`, open its existing entry instead
-of adding it again. This command uses Claude Code's default local scope for the
-current project.
+Use `~/.local/bin/ui-reference-mcp auth mobbin`, `~/.local/bin/ui-reference-mcp auth google-fonts`, or `~/.local/bin/ui-reference-mcp auth iconify` to configure or check one provider directly. The Google Fonts command also accepts `--stdin` for an explicitly managed noninteractive input stream. `~/.local/bin/ui-reference-mcp auth` without a provider opens the provider selector. `~/.local/bin/ui-reference-mcp install --skip-auth` installs the free skills and runtime without authenticating providers; references or fonts that need missing credentials remain unavailable, while Iconify needs no credential.
 
-The free plugin installs separately:
+Global connection files written by the installer:
 
-```text
-/plugin marketplace add uizze/uizze
-/plugin install uizze@uizze
-```
+| Agent | User configuration file |
+| --- | --- |
+| omp | `~/.omp/agent/mcp.json` under the active omp profile |
+| Codex | `$CODEX_HOME/config.toml`; default `~/.codex/config.toml` |
+| Claude Code | `~/.claude.json`, or `$CLAUDE_CONFIG_DIR/.claude.json` when relocated |
+| Cursor | `~/.cursor/mcp.json` |
 
-Follow the install summary if Claude asks you to reload plugins. Use
-`/uizze:anti-ui-slop` for a focused UI task.
+The server runs over local stdio using connection key `ui-reference`. To reload a changed connection, refresh or restart the agent as appropriate; no server URL, bearer token, or manual credential environment variable is used.
 
-## Cursor
+## Tool contracts
 
-Add this entry to `mcpServers` in your project's `.cursor/mcp.json`, preserving
-any servers already configured there:
+Both tools reject unknown fields. Queries are trimmed and must be nonempty. `limit` is an integer from 1 through 3 and defaults to `3`.
+
+### `find_ui_references`
+
+| Field | Required | Values / default |
+| --- | --- | --- |
+| `query` | yes | Nonempty string after trimming |
+| `platform` | yes | `ios` or `web` |
+| `kind` | no | `screen`, `flow`, or `section`; defaults to `screen` |
+| `source` | no | `mobbin`; defaults to `mobbin` |
+| `limit` | no | Integer `1`–`3`; defaults to `3` |
+| `mode` | no | `standard` or `deep`; screens only, defaults to `standard` |
+| `task_intent` | no | Nonempty string after trimming |
+
+Sections are web-only. `mode` is valid only for screens. Results preserve Mobbin's native MCP text and image content plus its structured metadata; there is no promised normalized reference-item schema. Cite a result using its canonical `mobbin_url`, not an invented URL or a preview image link.
+
+### `find_ui_materials`
+
+| Field | Required | Values / default |
+| --- | --- | --- |
+| `query` | yes | Nonempty string after trimming |
+| `kind` | yes | `font` or `icon` |
+| `source` | no | `google-fonts` for fonts; `iconify` for icons |
+| `limit` | no | Integer `1`–`3`; defaults to `3` |
+| `category` | no | Fonts only: `serif`, `sans-serif`, `monospace`, `display`, or `handwriting` |
+| `prefix` | no | Icons only: lowercase icon-set slug matching `^[a-z0-9]+(?:-[a-z0-9]+)*$`, such as `lucide` |
+
+An explicit source must match the requested kind. `category` is rejected for icons; `prefix` is rejected for fonts. Font results contain `id`, `family`, `category`, `variants`, `subsets`, `source_url`, `css_url`, and `files`. Font matching searches Google Fonts catalog metadata; the API does not provide a license record, so check the linked Google Fonts family page before redistribution. Cite the family `source_url`; use `css_url` when loading the font.
+
+Icon results contain `id` (`prefix:name`), `name`, `collection`, `source_url`, and `asset_url`, plus `author` and `license` only when Iconify returns that metadata. Cite the Iconify set `source_url`; the `asset_url` links to its SVG asset. Neither provider's assets are bundled or proxied.
+
+Successful material results have this discriminated shape (with the corresponding source and kind for icons):
 
 ```json
 {
-  "mcpServers": {
-    "uizze": {
-      "url": "https://uizze.com/mcp"
-    }
+  "source": "google-fonts",
+  "kind": "font",
+  "results": []
+}
+```
+
+The `results` array items have these exact fields:
+
+- Font: `{ id: string, family: string, category: string, variants: string[], subsets: string[], source_url: string, css_url: string, files: Record<string, string> }`.
+- Icon: `{ id: string, name: string, collection: string, source_url: string, asset_url: string, author?: { name: string, url?: string }, license?: { title: string, spdx?: string, url?: string } }`.
+
+The returned material object is available as `structuredContent` and as a JSON string in the text content.
+
+An empty `results` array is a valid no-match, not a provider error.
+
+## Errors
+
+Wrapper-generated tool errors set `isError: true`, include a text JSON body, and provide structured content in this form:
+
+```json
+{
+  "error": {
+    "code": "CONFIG_REQUIRED",
+    "source": "google-fonts",
+    "message": "A safe, actionable error message"
   }
 }
 ```
 
-Open Cursor's MCP settings, enable `uizze`, and complete its OAuth sign-in when
-prompted. For access across projects, Cursor also supports `~/.cursor/mcp.json`.
+The available codes are:
 
-Install the free skill in your project with the command below, selecting Cursor
-when the installer asks for an agent. The skill and MCP connection are separate.
+- `AUTH_REQUIRED`: Mobbin login is missing, expired, or rejected.
+- `CONFIG_REQUIRED`: provider credentials are missing or cannot be read safely.
+- `PROVIDER_ERROR`: a provider request, response, or credential refresh failed.
+- `INVALID_INPUT`: fields or field combinations are not supported.
 
-## Cline
+HTTP, network, malformed-response, or credential failures are errors, never empty matches. Mobbin's native provider errors remain errors with their returned safe message. See the [Mobbin MCP features](https://docs.mobbin.com/mcp/features.md), [Google Fonts Developer API](https://developers.google.com/fonts/docs/developer_api), [Google Fonts CSS API](https://developers.google.com/fonts/docs/css2), and [Iconify API](https://iconify.design/docs/api/search.html) for provider details.
 
-Cline has its own MCP settings, separate from VS Code / Copilot. A Marketplace
-listing is not required to connect Uizze manually. Set up Cline's model provider
-first; that login is separate from your paid Uizze account.
+## Development
 
-In Cline CLI, run:
-
-```bash
-cline mcp add uizze --transport http https://uizze.com/mcp
-```
-
-Confirm the name `uizze`, **Remote (HTTP)** and the endpoint above. Choose
-**OAuth** and leave **OAuth client ID** empty for dynamic registration.
-Complete Uizze's browser authorization, then return to Cline. Reuse an existing
-`uizze` entry instead of adding a duplicate. The wizard stores authentication
-locally; do not paste tokens into chat or commit its settings file.
-
-For the VS Code extension, open Cline's **MCP Servers → Remote Servers**,
-enter the same name and URL, and select **Streamable HTTP**. Use Cline's
-authentication flow when prompted, not Copilot's MCP settings. See
-[Cline's MCP documentation](https://docs.cline.bot/mcp/mcp-overview).
-
-After connecting, verify that Cline discovers `find_ui_references` and
-`find_ui_materials`, then [try the connection](#try-the-connection). A saved
-entry alone does not establish authenticated retrieval. If sign-in or paid
-access is required, complete that step in Uizze; do not switch to unauthenticated
-access. Install the [free skill](#install-the-free-skill) separately if wanted.
-
-## Gemini CLI
-
-Install the complete Uizze extension, including the free skill and remote MCP:
-
-```bash
-gemini extensions install https://github.com/uizze/gemini-extension
-```
-
-Restart Gemini CLI, then run `/mcp auth uizze` to connect your Uizze account.
-`gemini extensions list` should show `uizze`, the `anti-ui-slop` skill, and one
-MCP server. [Package and starter prompts](../../plugins/gemini-cli/).
-
-## VS Code / GitHub Copilot
-
-Open Extensions and search `@mcp Uizze` with the MCP marketplace enabled.
-The [GitHub catalog listing](https://github.com/mcp/uizze/uizze) points to the
-same service. Review the publisher and connection before installing.
-
-For a project connection, merge this into `.vscode/mcp.json`:
-
-```json
-{
-  "servers": {
-    "uizze": {
-      "type": "http",
-      "url": "https://uizze.com/mcp"
-    }
-  }
-}
-```
-
-Run `MCP: List Servers`, select `uizze`, and start it. Complete the native
-OAuth sign-in when prompted. Use a trusted project to run tools. Install the
-[free skill](#install-the-free-skill) separately and select GitHub Copilot.
-
-## Antigravity
-
-The [Uizze custom plugin](../../plugins/antigravity/) includes the complete
-skill and native MCP configuration. Follow that package's installation steps.
-A custom installation does not require an MCP Store listing.
-
-For MCP alone, merge this into `~/.gemini/config/mcp_config.json`:
-
-```json
-{
-  "mcpServers": {
-    "uizze": {
-      "serverUrl": "https://uizze.com/mcp"
-    }
-  }
-}
-```
-
-Open Settings → Customizations, refresh Installed MCP Servers, and authenticate
-Uizze. Do not add the same server manually if you already installed the plugin.
-
-## Windsurf / Cascade
-
-In the Cascade panel, open MCP Servers and edit the raw configuration. Merge
-this into `~/.codeium/windsurf/mcp_config.json`:
-
-```json
-{
-  "mcpServers": {
-    "uizze": {
-      "serverUrl": "https://uizze.com/mcp"
-    }
-  }
-}
-```
-
-Refresh the server list and complete OAuth when prompted. Install the
-[free skill](#install-the-free-skill) separately and select your agent.
-These instructions apply to Cascade. Devin Local, the newer default agent in
-Devin Desktop, uses its own CLI configuration; do not copy this into that file.
-
-## Zed
-
-Open Settings → AI → MCP Servers → Add Server → Add Remote Server. Use the
-name `uizze` and URL `https://uizze.com/mcp`. The equivalent settings entry is:
-
-```json
-{
-  "context_servers": {
-    "uizze": {
-      "url": "https://uizze.com/mcp"
-    }
-  }
-}
-```
-
-With no Authorization header configured, Zed prompts for the MCP OAuth flow.
-Complete sign-in and check that the server is active. This connects the paid
-MCP; it does not install the free skill or establish a Zed marketplace listing.
-
-## v0
-
-Open [v0 Settings → Integrations](https://v0.app/settings/integrations). Under
-MCP Connections, add `Uizze` with URL `https://uizze.com/mcp`, choose OAuth,
-and complete Uizze sign-in. Reuse the existing entry if it is already connected.
-
-Before sending your request, open the chat composer's **+ → MCPs** menu and
-select **Uizze**. Confirm it appears under **Selected**. Saving the connection
-in Settings alone does not mean it is selected for your chat.
-
-Ask for the references you need, for example:
-
-```text
-Use Uizze to find two real iOS app onboarding screens. Show the screenshots
-here and briefly explain what each reference is useful for. This is reference
-research only: do not create files, build an app, or publish anything.
-```
-
-The screenshots appear as native attachments that you can expand inside the
-chat. v0 Mini may also repeat them as broken inline previews; use the loaded
-attachments above the answer. This display issue remains under investigation.
-If v0 searches the web instead of calling Uizze, check that Uizze is selected
-in the MCPs menu before sending another request.
-
-This manual OAuth connection and native image delivery were tested September
-10, 2026. They are separate from Vercel Marketplace listing availability.
-
-## Try the connection
-
-Confirm your client's Uizze entry shows the two tools listed above. Then ask:
-
-```text
-Use Uizze to find up to three web UI references for a billing settings page
-with invoice history. Explain which hierarchy and table decisions would
-help our page. Keep our components, content, and brand.
-```
-
-The MCP requires an account with paid access. If your client shows a sign-in
-request, complete it first. If it reports an access or subscription problem,
-check your [Uizze account](https://uizze.com/?utm_source=github&utm_medium=repository&utm_campaign=discovery&utm_content=mcp_connection).
-A connected server can return no relevant references; continue from your
-project in that case.
-
-For a complete task, [try your first screen](../../examples/first-screen.md).
-Client instructions reviewed September 9, 2026 against
-[Claude Code](https://code.claude.com/docs/en/mcp),
-[Cursor](https://cursor.com/docs/mcp),
-[Gemini CLI](https://geminicli.com/docs/tools/mcp-server/),
-[VS Code](https://code.visualstudio.com/docs/agent-customization/mcp-servers),
-[Antigravity](https://antigravity.google/docs/mcp),
-[Cascade](https://docs.devin.ai/desktop/cascade/mcp), and
-[Zed](https://zed.dev/docs/ai/mcp) documentation.
-
-Gemini CLI 0.59.0 installed the public v1.2.16 release and recognized its skill
-and MCP configuration. The VS Code catalog returned Uizze by name. Those
-checks do not establish authenticated retrieval in every client. Marketplace
-availability and review status are separate from manual installation.
-
-## Install the free skill
-
-```bash
-npx skills add https://uizze.com --skill anti-ui-slop
-```
-
-The skill works without the MCP.
-
-## Metadata and documentation
-
-- [Official MCP Registry](https://registry.modelcontextprotocol.io/v0/servers?search=uizze)
-- [Live MCP manifest](https://uizze.com/.well-known/mcp.json)
-- [Live server card](https://uizze.com/.well-known/mcp/server-card.json)
-- [Setup documentation](https://uizze.com/docs)
-- [Privacy](https://uizze.com/privacy)
-- [Terms](https://uizze.com/terms)
+Source, package scripts, and the local stdio server are maintained in this directory. For contribution and security guidance, see [CONTRIBUTING.md](CONTRIBUTING.md) and [SECURITY.md](SECURITY.md).

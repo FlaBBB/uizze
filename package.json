@@ -1,0 +1,46 @@
+{
+  "name": "uizze-ui-reference-mcp",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=24"
+  },
+  "bin": {
+    "ui-reference-mcp": "integrations/mcp/dist/cli.js"
+  },
+  "files": [
+    "integrations/mcp/dist",
+    "integrations/mcp/README.md",
+    "integrations/mcp/LICENSE",
+    "LICENSING.md",
+    "skills/anti-ui-slop",
+    "skills/ui-design",
+    "skills/ui-radar"
+  ],
+  "license": "SEE LICENSE IN LICENSING.md",
+  "author": "FlaBBB",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/FlaBBB/uizze.git"
+  },
+  "scripts": {
+    "build": "tsc -p integrations/mcp/tsconfig.json",
+    "typecheck": "tsc --noEmit -p integrations/mcp/tsconfig.json",
+    "test": "node --test integrations/mcp/test/*.test.mjs",
+    "prepare": "npm run build"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "1.29.0",
+    "jsonc-parser": "3.3.1",
+    "proper-lockfile": "4.1.2",
+    "skills": "1.5.20",
+    "toml-eslint-parser": "1.0.3",
+    "zod": "4.6.5"
+  },
+  "devDependencies": {
+    "@types/node": "24.0.0",
+    "@types/proper-lockfile": "4.1.4",
+    "typescript": "6.0.3"
+  }
+}

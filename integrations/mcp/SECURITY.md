@@ -1,15 +1,20 @@
 # Security Policy
 
-Please do not report vulnerabilities in public issues.
+The local MCP server and this integration are maintained in the FlaBBB fork.
 
-Use GitHub's private vulnerability-reporting form for this repository:
-
-https://github.com/uizze/uizze/security/advisories/new
-
-Include the affected endpoint or file, reproduction steps, impact, and any suggested mitigation. Never include a live UIZZE agent token, user data, or private catalogue material in a report.
+Private vulnerability reporting is not currently enabled on this fork. For
+private coordination, contact maintainer FlaBBB through the
+[GitHub profile](https://github.com/FlaBBB). Do not open a public issue with
+exploitable details or include live Mobbin credentials, Google Fonts API keys,
+authorization codes, user data, private screenshots, or proprietary catalogue
+content in any report.
 
 ## Scope
 
-Security reports are welcome for the published MCP metadata, agent skills, authentication guidance, remote MCP endpoint behavior, and any UIZZE-owned code or configuration represented in this repository.
+Reports may cover the local stdio server, its Mobbin and Google Fonts
+authorization and credential handling, Iconify requests, installer behavior,
+agent configuration, or instructions in this repository.
 
-Third-party coding agents, package runners, GitHub, Smithery, MCP clients, and operating-system behavior are outside this repository's control unless the issue is caused by UIZZE instructions or metadata.
+Third-party coding agents, package runners, GitHub, MCP clients, provider
+services, and operating-system behavior are outside this repository's control
+unless an issue is caused by this fork's code or instructions.

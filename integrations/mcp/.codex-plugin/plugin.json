@@ -1,14 +1,13 @@
 {
   "name": "uizze",
   "version": "1.2.14",
-  "description": "Connect Codex to UIZZE's focused UI references and hosted materials.",
+  "description": "UI design workflow with Mobbin references and Google Fonts/Iconify materials",
   "author": {
-    "name": "UIZZE",
-    "email": "business@uizze.com",
-    "url": "https://uizze.com"
+    "name": "FlaBBB",
+    "url": "https://github.com/FlaBBB/uizze"
   },
-  "homepage": "https://uizze.com/docs",
-  "repository": "https://github.com/uizze/uizze",
+  "homepage": "https://github.com/FlaBBB/uizze",
+  "repository": "https://github.com/FlaBBB/uizze",
   "license": "MIT",
   "keywords": [
     "ui",
@@ -18,30 +17,26 @@
     "mcp"
   ],
   "mcpServers": {
-    "uizze": {
-      "type": "http",
-      "url": "https://uizze.com/mcp"
+    "ui-reference": {
+      "type": "stdio",
+      "command": "ui-reference-mcp",
+      "args": []
     }
   },
   "interface": {
-    "displayName": "UIZZE",
-    "shortDescription": "Stop UI slop before it ships",
-    "longDescription": "Use the product's existing system first, then retrieve a few focused UIZZE references or hosted materials for concrete unresolved questions.",
-    "developerName": "UIZZE",
+    "displayName": "Uizze multi-source fork",
+    "shortDescription": "UI design workflow with Mobbin references and Google Fonts/Iconify materials",
+    "longDescription": "Free skills guide product-aware UI design. Optional local MCP tools search Mobbin references and Google Fonts or Iconify materials; credentials stay in the local server's user configuration.",
+    "developerName": "FlaBBB",
     "category": "Developer Tools",
     "capabilities": [
-      "Interactive",
       "Read"
     ],
-    "websiteURL": "https://uizze.com",
-    "privacyPolicyURL": "https://uizze.com/privacy",
-    "termsOfServiceURL": "https://uizze.com/terms",
+    "websiteURL": "https://github.com/FlaBBB/uizze",
     "defaultPrompt": [
-      "Find focused references for this interface and explain the transferable decisions.",
-      "Find a hosted font or icon only if this screen actually needs one."
+      "Find Mobbin references for an onboarding flow with progressive profile setup.",
+      "Find a Google Font or Lucide icon for this interface."
     ],
-    "brandColor": "#111111",
-    "composerIcon": "./assets/uizze-logo-400x400.png",
-    "logo": "./assets/uizze-logo-400x400.png"
+    "brandColor": "#111111"
   }
 }

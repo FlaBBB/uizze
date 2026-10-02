@@ -1,17 +1,16 @@
 {
   "name": "uizze",
   "owner": {
-    "name": "Uizze",
-    "email": "business@uizze.com"
+    "name": "FlaBBB"
   },
   "metadata": {
-    "description": "UI design that stands out"
+    "description": "UI design workflow with Mobbin references and Google Fonts/Iconify materials"
   },
   "plugins": [
     {
       "name": "uizze",
       "source": "./plugins/cursor-agent",
-      "description": "UI design that stands out"
+      "description": "UI design workflow with Mobbin references and Google Fonts/Iconify materials"
     }
   ]
 }

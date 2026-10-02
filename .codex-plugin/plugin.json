@@ -1,14 +1,13 @@
 {
   "name": "uizze",
   "version": "1.3.0",
-  "description": "UI design that stands out",
+  "description": "UI design workflow with Mobbin references and Google Fonts/Iconify materials",
   "author": {
-    "name": "Uizze",
-    "email": "business@uizze.com",
-    "url": "https://uizze.com"
+    "name": "FlaBBB",
+    "url": "https://github.com/FlaBBB/uizze"
   },
-  "homepage": "https://uizze.com",
-  "repository": "https://github.com/uizze/uizze",
+  "homepage": "https://github.com/FlaBBB/uizze",
+  "repository": "https://github.com/FlaBBB/uizze",
   "license": "MIT",
   "keywords": [
     "ui",
@@ -19,23 +18,19 @@
   ],
   "skills": "./skills/",
   "interface": {
-    "displayName": "Uizze",
-    "shortDescription": "UI design that stands out",
-    "longDescription": "Uizze gives coding agents a free anti-ui-slop Skill and optional full MCP access to live UI references and license-clear materials. Use the skill to inspect the product and design system, write a design contract, cover required states, and run a bounded finish gate. The MCP answers one concrete unresolved UI question with strong full-screen references and finds license-clear materials for a concrete role.",
-    "composerIcon": "./plugins/openai-directory/uizze/assets/uizze-logo.png",
-    "logo": "./plugins/openai-directory/uizze/assets/uizze-logo.png",
-    "developerName": "Uizze",
+    "displayName": "Uizze multi-source fork",
+    "shortDescription": "UI design workflow with Mobbin references and Google Fonts/Iconify materials",
+    "longDescription": "Free skills guide product-aware UI design. Optional local MCP tools search Mobbin references and Google Fonts or Iconify materials; credentials stay in the local server's user configuration.",
+    "developerName": "FlaBBB",
     "category": "Developer Tools",
     "capabilities": [
       "Read"
     ],
-    "websiteURL": "https://uizze.com/ai-ui-slop",
-    "privacyPolicyURL": "https://uizze.com/privacy",
-    "termsOfServiceURL": "https://uizze.com/terms",
+    "websiteURL": "https://github.com/FlaBBB/uizze",
     "defaultPrompt": [
-      "Help me ground a new interface in Uizze real screens.",
-      "Find strong full-screen UI references for this unresolved interface question.",
-      "Run the bounded UI finish gate on my rendered interface."
+      "Find Mobbin references for an onboarding flow with progressive profile setup.",
+      "Find Google Fonts suited to a compact editorial dashboard.",
+      "Find a Lucide icon for saving an item."
     ],
     "brandColor": "#111111"
   }

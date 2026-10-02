@@ -1,6 +1,6 @@
 ---
 name: ui-design
-description: Design, build, or improve web and mobile interfaces using real product examples from UIZZE’s 800,000+ web and iOS screens. Use for UI design, UX design, frontend or web design, mobile app UI, responsive layouts, design systems, redesigns, visual polish, interface critique, and requests like “make this UI better.”
+description: Design, build, or improve web and mobile interfaces using the local product and design system, focused Mobbin references, and Google Fonts or Iconify materials. Use for UI design, UX design, frontend and mobile layouts, design systems, redesigns, visual polish, and interface critique.
 license: Apache-2.0
 metadata:
   uizze-version: uizze-design-v13
@@ -31,11 +31,22 @@ For implementation, use [craft](reference/craft.md) after the direction is settl
 
 “Use Uizze Overdrive on this screen” works through this router; a native slash command depends on the host. These are self-contained Markdown playbooks, not an installer, background service, or executable engine.
 
-## Optional Uizze evidence
+## Optional UI evidence
 
-Read [the reference policy](references/uizze-reference-policy.md) before using `find_ui_references` or `find_ui_materials`. Inspect relevant visual evidence when it can inform the layout, state, interaction, or assets. Use the host's available tools, not invented calls or connections. Paid retrieval is optional; missing access does not block local design work.
+Read [the reference policy](references/ui-reference-policy.md) before using `find_ui_references` or `find_ui_materials`. Inspect relevant visual evidence when it can inform the layout, state, interaction, or assets. Use the host's available namespaced tool names on the `ui-reference` connection; do not invent calls or connections.
 
-Distinguish an exact reference, a related example, no match, and a service error. Briefly disclose a limitation that affected the result. Never claim an image was inspected or a state was found without evidence.
+Distinguish a useful match, a related example, no match, and a provider error. Briefly disclose a limitation that affected the result. Never claim an image was inspected or a state was found without evidence.
+
+## Terminal onboarding
+
+Install the optional local MCP with:
+
+```sh
+npx --yes --package 'git+https://github.com/FlaBBB/uizze.git#ui-reference-mcp-v1.0.0' ui-reference-mcp install
+```
+
+Mobbin authorization uses browser consent; Google Fonts keys are entered in a masked terminal prompt. For a free setup without provider credentials, use `~/.local/bin/ui-reference-mcp install --skip-auth`; provider status may remain “not configured.” Rerun setup with `~/.local/bin/ui-reference-mcp setup`, or recover access in the terminal with `~/.local/bin/ui-reference-mcp auth mobbin` or `~/.local/bin/ui-reference-mcp auth google-fonts` (`~/.local/bin/ui-reference-mcp auth iconify` needs no key). The connection key is `ui-reference`; host tools may appear under host-specific namespaced names.
+The prefix defaults to `~/.local`; if `UI_REFERENCE_INSTALL_PREFIX` sets another prefix, use `<prefix>/bin/ui-reference-mcp` instead. Adding `<prefix>/bin` to `PATH` lets the bare command name work. Ordinary UI tasks must not trigger automatic authentication, downloads, or browser prompts.
 
 ## Finish
 

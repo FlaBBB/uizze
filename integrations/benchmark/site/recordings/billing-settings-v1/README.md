@@ -36,6 +36,15 @@ credentials, paid content, or generated comparison imagery is included here.
 
 This July 2026 recording documents a historical workflow. Use the
 [current free agent workflows](../../../../../examples/agent-workflows.md)
-for a new task. The optional authenticated MCP now provides focused
-reference and hosted-material search through `find_ui_references` and
-`find_ui_materials`; see the [current connection guide](../../../../mcp).
+for a new task. Current optional reference and material search uses the local
+stdio server from the FlaBBB fork:
+
+```bash
+npx --yes --package 'git+https://github.com/FlaBBB/uizze.git#ui-reference-mcp-v1.0.0' ui-reference-mcp install
+```
+The default terminal binary is `~/.local/bin/ui-reference-mcp` (the prefix may differ via `UI_REFERENCE_INSTALL_PREFIX`; with `<prefix>/bin` on `PATH`, the bare `ui-reference-mcp` name also works).
+
+The server exposes `find_ui_references` and `find_ui_materials`; see the
+[current fork integration guide](../../../../mcp/) for setup, authorization,
+and tool details. The recorded hosted MCP workflow above is historical
+provenance, not current connection guidance.

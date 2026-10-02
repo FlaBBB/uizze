@@ -1,11 +1,9 @@
 {
   "mcpServers": {
-    "uizze": {
-      "type": "http",
-      "url": "${UIZZE_MCP_URL}",
-      "headers": {
-        "Authorization": "Bearer ${UIZZE_MCP_TOKEN}"
-      }
+    "ui-reference": {
+      "type": "stdio",
+      "command": "ui-reference-mcp",
+      "args": []
     }
-  }
+}
 }

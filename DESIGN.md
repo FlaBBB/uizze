@@ -1,24 +1,22 @@
-# UIZZE design contract
+# Uizze multi-source fork design contract
 
-UIZZE is a practical, editorial tool for coding agents. Its interface should feel
-clear, light, direct, and a little playful. The product helps agents make better
-UI decisions, so the product UI must model that discipline: visible hierarchy,
-specific nouns, real states, and no decorative interface that has no job.
+This repository supports focused, evidence-led UI work. Agent guidance should
+be clear, direct, and grounded in the target product: visible hierarchy,
+specific nouns, real states, and no decorative interface without a job.
 
-This is the public, agent-readable design contract for UIZZE. It describes the
-current product source of truth. When implementation and this file disagree,
-prefer the existing components and semantic tokens, then update this file with
-the same change.
+This is the agent-readable design contract for the fork. When an implementation
+and this file disagree, prefer the existing components and semantic tokens,
+then update this contract with the same change.
 
 ## Product voice
 
-- Say what the tool does in plain language: stop generic UI before it ships.
+- Say what the tool does in plain language.
 - Keep labels and helper text short. Name the actual object, state, or action.
 - Prefer useful verbs: `Search`, `Review`, `Check`, `Install`, `Save`, `Copy`.
 - Do not use empty marketing filler, fake metrics, or vague labels such as
   `Magic`, `Insights`, or `Optimize` without a concrete explanation.
-- Keep the free anti-UI-slop skill and authenticated UIZZE MCP distinct. Never
-  imply that the free local skill requires an account or token.
+- Keep the free anti-UI-slop skill and optional local MCP distinct. The skill
+  does not require an account or server connection.
 
 ## Visual direction
 
@@ -99,8 +97,14 @@ semantic token, not the raw value, in UI code.
 
 ## Reference and review surfaces
 
-UIZZE is a UI-reference product, not a template marketplace. When an agent uses
-references:
+The local `ui-reference-mcp` server is an optional evidence source, not a
+template marketplace or a prerequisite for the skills. It runs over stdio and
+exposes exactly `find_ui_references` and `find_ui_materials`: Mobbin searches
+for UI references, Google Fonts catalog search for font metadata, and public
+Iconify search for icons. References and materials retrieval are optional; use
+it only when a concrete unresolved question would benefit from evidence.
+
+When an agent uses references:
 
 1. Identify the screen's job, user decision, primary action, product nouns, and
    required states.
@@ -111,10 +115,10 @@ references:
 4. Review the rendered result before handoff. A source-only review is not a
    finish gate.
 
-The authenticated UIZZE MCP exposes `find_ui_references` and
-`find_ui_materials`. Use them only when a concrete unresolved question would
-benefit from a few focused references or hosted materials. Empty retrieval is a
-valid no-op.
+A successful empty retrieval is a valid no-match. Provider errors are not
+no-matches. Cite reference results with their canonical `mobbin_url`; cite
+material results with the returned Google Fonts or Iconify source links. Do not
+claim license metadata that the provider did not return.
 
 ## Finish gate
 
@@ -131,8 +135,6 @@ Before shipping a rendered UI, verify:
 
 ## Source links
 
-- Product: https://uizze.com
-- Public source: https://github.com/uizze/uizze
-- Existing implementation rules: https://github.com/uizze/uizze/blob/main/DESIGN_SYSTEM.md
-- Free anti-UI-slop skill: https://uizze.com/ai-ui-slop
-- Authenticated UIZZE MCP: https://uizze.com/mcp
+- Fork repository: https://github.com/FlaBBB/uizze
+- Local MCP server and onboarding: [integrations/mcp](integrations/mcp/)
+- Anti-UI-slop skill: [skills/anti-ui-slop](skills/anti-ui-slop/)

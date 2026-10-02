@@ -1,9 +1,10 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/mcp.schema.json",
   "mcpServers": {
-    "uizze": {
-      "type": "streamable-http",
-      "url": "https://uizze.com/mcp"
+    "ui-reference": {
+      "type": "stdio",
+      "command": "ui-reference-mcp",
+      "args": []
     }
   }
 }

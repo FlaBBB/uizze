@@ -1,4 +1,4 @@
-name: Domain Skill Install
+name: Fork Skill Install
 
 on:
   workflow_dispatch:
@@ -28,7 +28,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - name: Check out the canonical UIZZE source
+      - name: Check out the fork
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v4
 
       - name: Set up Node.js
@@ -36,16 +36,11 @@ jobs:
         with:
           node-version: 24.20.0
 
-      - name: Install the public UIZZE skills
+      - name: Install fork skills
         working-directory: ${{ runner.temp }}
-        run: >-
-          npx --yes skills@1.5.20 add https://uizze.com
-          --skill '*'
-          --agent codex
-          --yes
-          --copy
+        run: npx --yes skills@1.5.20 add "$GITHUB_WORKSPACE" --skill '*' --agent codex --yes --copy
 
-      - name: Verify the installed skills
+      - name: Verify installed skills
         working-directory: ${{ runner.temp }}
         shell: bash
         run: |
@@ -55,5 +50,8 @@ jobs:
             skill="$skill_dir/SKILL.md"
             test -s "$skill"
             grep -qx "name: $name" "$skill"
-            diff --brief --recursive "$skill_dir" "$GITHUB_WORKSPACE/skills/$name"
+            if [[ -f "$GITHUB_WORKSPACE/skills/$name/CHECKSUMS.sha256" ]]; then
+              test -s "$skill_dir/CHECKSUMS.sha256"
+              (cd "$skill_dir" && sha256sum --check CHECKSUMS.sha256)
+            fi
           done

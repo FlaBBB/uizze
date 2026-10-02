@@ -1,11 +1,11 @@
 ---
 name: anti-ui-slop
-description: Stop coding agents from shipping generic UI. Use UIZZE's 800,000+ real web and iOS screens to build product-specific interfaces, define a design contract, cover required states, and run a hard finish gate. Use when designing, implementing, redesigning, critiquing, or pre-ship reviewing a web or iOS interface in Codex, Claude Code, Cursor, Copilot, or another coding agent. Trigger with "anti-ui-slop", "stop UI slop", "ground this UI in real screens", or "run the UI finish gate".
+description: Stop coding agents from shipping generic UI. Use the local product, its design system, focused Mobbin references, and Google Fonts or Iconify materials to build product-specific interfaces, define a design contract, cover required states, and run a hard finish gate.
 license: Apache-2.0; see LICENSE and NOTICE for attribution
 metadata:
   version: "1.3.0"
-  author: "UIZZE <business@uizze.com>"
-  compatibility: "Designed for Claude Code, Codex, Cursor, and GitHub Copilot; works in any agent that can read project files and fetch a URL."
+  author: "FlaBBB"
+  compatibility: "Works in any coding agent that can read project files and use host-provided tools."
   tags: "ui-design, design-system, design-review, frontend, web-ui, ios-ui"
 ---
 
@@ -13,24 +13,22 @@ metadata:
 
 # Stop Making UI Slop
 
-Build product-specific UI with 800,000+ real web and iOS screens via [UIZZE](https://uizze.com).
-
-![Stop Making UI Slop with UIZZE](https://uizze.com/landing/anti-ui-slop-skill-banner.png)
+Build product-specific UI from the product brief and local design system, using focused references or materials only when they answer a real design question.
 
 ## Overview
 
-Use the product brief, existing UI, components, and local design system to make intentional interfaces. Uizze supplies focused design guidance and, when useful, a small number of relevant visual references.
+Use the product brief, existing UI, components, and local design system to make intentional interfaces. References are optional evidence; the project and the user's choices remain authoritative.
 
 ## Prerequisites
 
 - A screen or component to build, redesign, or review — a file path or a short description.
 - The product's existing components, design tokens, and visual language, so the build extends them instead of inventing a new system.
-- Optional access to the paid Uizze MCP for focused references and hosted materials.
+- Optional access to the `ui-reference` connection provides Mobbin references and Google Fonts/Iconify materials. Use only the provider and kind that fit the task.
 
-## Authentication
+## Provider access
 
-- The free skill and public catalogue work without an account, token, MCP connection, dependency, script, or executable.
-- The optional full UIZZE MCP may use the host's normal connection and authentication flow. Never claim it is connected without an actual host result.
+- Local design work remains useful without the MCP connection. Missing provider access blocks only that provider.
+- Mobbin requires an authorized Pro, Team, or Enterprise account; Google Fonts requires the user's own Developer API key. Never claim access without an observed tool result.
 
 ## Work from the product
 
@@ -54,11 +52,22 @@ For implementation, use [craft](reference/craft.md) after the direction is settl
 
 “Use Uizze Overdrive on this screen” works through this router; a native slash command depends on the host. These are self-contained Markdown playbooks, not an installer, background service, or executable engine.
 
-## Optional Uizze evidence
+## Optional UI evidence
 
-Read [the reference policy](references/uizze-reference-policy.md) before using `find_ui_references` or `find_ui_materials`. Inspect relevant visual evidence when it can inform the layout, state, interaction, or assets. Use the host's available tools, not invented calls or connections. Paid retrieval is optional; missing access does not block local design work.
+Read [the reference policy](references/ui-reference-policy.md) before using `find_ui_references` or `find_ui_materials`. Inspect relevant visual evidence when it can inform the layout, state, interaction, or assets. Use the host's available namespaced tool names on the `ui-reference` connection; do not invent calls or connections.
 
-Distinguish an exact reference, a related example, no match, and a service error. Briefly disclose a limitation that affected the result. Never claim an image was inspected or a state was found without evidence.
+Distinguish a useful match, a related example, no match, and a provider error. Briefly disclose a limitation that affected the result. Never claim an image was inspected or a state was found without evidence.
+
+## Terminal onboarding
+
+Install the optional local MCP with:
+
+```sh
+npx --yes --package 'git+https://github.com/FlaBBB/uizze.git#ui-reference-mcp-v1.0.0' ui-reference-mcp install
+```
+
+Mobbin authorization uses browser consent; Google Fonts keys are entered in a masked terminal prompt. For a free setup without provider credentials, use `~/.local/bin/ui-reference-mcp install --skip-auth`; provider status may remain “not configured.” Rerun setup with `~/.local/bin/ui-reference-mcp setup`, or recover access in the terminal with `~/.local/bin/ui-reference-mcp auth mobbin` or `~/.local/bin/ui-reference-mcp auth google-fonts` (`~/.local/bin/ui-reference-mcp auth iconify` needs no key). The connection key is `ui-reference`; host tools may appear under host-specific namespaced names.
+The prefix defaults to `~/.local`; if `UI_REFERENCE_INSTALL_PREFIX` sets another prefix, use `<prefix>/bin/ui-reference-mcp` instead. Adding `<prefix>/bin` to `PATH` lets the bare command name work. Ordinary UI tasks must not trigger automatic authentication, downloads, or browser prompts.
 
 ## Finish
 

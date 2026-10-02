@@ -2,13 +2,11 @@
 
 # Stop Making UI Slop
 
-Build product-specific UI with the free Codex finish gate. Optional full UIZZE adds 800,000+ real web and iOS screens via [UIZZE](https://uizze.com).
-
-![Stop Making UI Slop with UIZZE](https://uizze.com/landing/anti-ui-slop-skill-banner.png)
+Build product-specific UI with this dependency-free Codex finish gate. An
+optional local MCP can provide Mobbin references and Google Fonts or Iconify
+materials; the challenge and verifier work without it.
 
 ## STOP UI SLOP: Codex Finish Gate
-
-[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/uizze/uizze/badge)](https://scorecard.dev/viewer/?uri=github.com/uizze/uizze)
 
 **A working UI is not finished if it only survives the happy path.**
 
@@ -25,7 +23,7 @@ It does one thing: makes “finished” testable. The verifier catches skipped p
 ## Try it with Codex
 
 ```bash
-git clone https://github.com/uizze/uizze.git
+git clone https://github.com/FlaBBB/uizze.git
 cd uizze/integrations/codex-finish-gate
 npm run verify
 npm run dev
@@ -84,16 +82,25 @@ Evidence:
 - remaining limitations:
 ```
 
-## Optional: add real interface context
+## Optional: add local interface context
 
-This starter is useful on its own. If a concrete visual question would benefit
-from real interface references or hosted design materials, [connect
-UIZZE](https://uizze.com). Its authenticated MCP exposes only
-`find_ui_references` and `find_ui_materials`; an empty result is a valid no-op.
+This finish gate works on its own. To add the optional local stdio MCP and
+globally connect omp, Codex, Claude Code, or Cursor, run:
 
-For a separate review of the finished interface, run the free [UIZZE UI Specificity Check](https://uizze.com/tools/ui-specificity-check). It checks the implementation evidence for missing states and generic UI patterns, then produces a local report without uploading the project.
+```bash
+npx --yes --package 'git+https://github.com/FlaBBB/uizze.git#ui-reference-mcp-v1.0.0' ui-reference-mcp install
+```
 
-Disclosure: this starter is prepared and published by UIZZE. The optional links above are UIZZE product links.
+The connection key is `ui-reference`. Its two tools are `find_ui_references`
+for Mobbin screens, flows, and web sections, and `find_ui_materials` for
+Google Fonts catalog metadata or public Iconify icons. Mobbin authorization and
+Google Fonts key entry happen in the terminal; Iconify needs no key. Run
+`~/.local/bin/ui-reference-mcp setup` to rerun provider onboarding or repair global connections (the prefix may differ via `UI_REFERENCE_INSTALL_PREFIX`; with `<prefix>/bin` on `PATH`, the bare `ui-reference-mcp` name also works). Use the returned `mobbin_url` for reference citations and provider `source_url` values for material citations. The server is local; this
+integration does not include a hosted review service.
+
+The finish-gate integration is a published upstream artifact retained in this
+fork. Current server setup and provider details are in
+[`integrations/mcp/`](../mcp/).
 
 ## Repository topics
 

@@ -1,43 +1,36 @@
-# UIZZE public distribution
+# Fork distribution
 
-Production is the source of truth. Directory copy must match these endpoints:
+This fork is maintained at [FlaBBB/uizze](https://github.com/FlaBBB/uizze).
+The maintained distribution paths in the fork are the repository itself,
+`skills/`, and the local MCP integration at `integrations/mcp/`.
 
-- Skills: https://uizze.com/.well-known/agent-skills/index.json
-- MCP manifest: https://uizze.com/.well-known/mcp.json
-- MCP server card: https://uizze.com/.well-known/mcp/server-card.json
-- Documentation: https://uizze.com/docs
+## Maintained install paths
 
-## Current product facts
+Install an individual skill directly from the fork:
 
-- Production publishes exactly three free skills: `anti-ui-slop`, `ui-design`,
-  and `ui-radar`.
-- The skills work without an account or MCP connection.
-- GitHub mirrors those three packages under `skills/`; production remains the
-  canonical source.
-- The hosted MCP is authenticated at `https://uizze.com/mcp`.
-- The MCP exposes `find_ui_references` and `find_ui_materials` only.
-- Empty retrieval is an intentional no-op.
-- The retired preview, older MCP-only source check, contracts, manifests,
-  audits, and hosted critique are not current MCP surfaces and must not appear
-  in listings.
+```bash
+npx skills add https://github.com/FlaBBB/uizze --skill ui-design
+```
 
-## Maintained listings
+Use the local backend's one-command installer for runtime, skills, provider
+onboarding, and global agent connections:
 
-| Surface | URL |
-| --- | --- |
-| GitHub | https://github.com/uizze/uizze |
-| GitHub MCP Registry | https://github.com/mcp/uizze/uizze |
-| GitHub Awesome Copilot | https://github.com/github/awesome-copilot/tree/main/plugins/uizze |
-| Agentic Awesome Skills | https://github.com/sickn33/agentic-awesome-skills/tree/main/skills/anti-ui-slop |
-| Build with Claude | https://github.com/davepoon/buildwithclaude/tree/main/plugins/all-skills/skills/anti-ui-slop |
-| Tons of Skills | https://github.com/jeremylongshore/tons-of-skills-marketplace/tree/main/plugins/design/uizze |
-| Official MCP Registry | https://registry.modelcontextprotocol.io/v0/servers?search=uizze |
-| Glama | https://glama.ai/mcp/connectors/io.github.uizze/uizze |
-| MCP Market | https://mcpmarket.com/server/uizze-1 |
-| MCPServers.org | https://mcpservers.org/servers/uizze-com |
+```bash
+npx --yes --package 'git+https://github.com/FlaBBB/uizze.git#ui-reference-mcp-v1.0.0' ui-reference-mcp install
+```
 
-Do not track star counts, submission queues, failed pitches, or copied listing
-text here. Use the production metadata above whenever a directory needs a
-refresh.
+The backend is distributed through Git installation from this fork and runs as
+a local stdio process. Its code and onboarding guide are in
+[`integrations/mcp/`](integrations/mcp/).
 
-For redistribution and catalog license fields, see [the license map](LICENSING.md).
+The default terminal binary is `~/.local/bin/ui-reference-mcp` (the prefix may differ via `UI_REFERENCE_INSTALL_PREFIX`; with `<prefix>/bin` on `PATH`, the bare `ui-reference-mcp` name also works).
+
+## Publication status
+
+Upstream Uizze registry, marketplace, and directory entries are not listings
+for this fork. The fork does not publish the backend to npm or another package
+registry, and it does not claim hosted manifests or registry listings. The Git
+install command above fetches the source from this repository; it is not an
+npm package publication.
+
+For license and redistribution details, see [the license map](LICENSING.md).

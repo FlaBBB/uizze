@@ -2,11 +2,12 @@
 
 # Stop Making UI Slop
 
-Build product-specific UI with the free, reproducible UI finish gate. Optional full UIZZE adds 800,000+ real web and iOS screens via [UIZZE](https://uizze.com).
+This fork retains the original Uizze benchmark: a free, reproducible UI
+finish-gate exercise with three bounded product tasks. The optional reference
+and material search documented below runs through this fork's local MCP server;
+it does not provide a hosted screen library.
 
-![Stop Making UI Slop with UIZZE](https://uizze.com/landing/anti-ui-slop-skill-banner.png)
-
-## UIZZE UI Slop Benchmark
+## Uizze UI Slop Benchmark
 
 **If the interface looks generated, the product already feels replaceable.**
 
@@ -28,13 +29,13 @@ include evidence for every awarded point.
 
 ## Run it for free
 
-You need Node.js 20+ and any coding workflow you want to evaluate. You do not
-need a UIZZE account.
+You need Node.js 20+ and any coding workflow you want to evaluate. No account
+or MCP connection is required.
 
-Run it locally from the canonical UIZZE repository:
+Run it locally from this fork:
 
 ```bash
-git clone https://github.com/uizze/uizze.git
+git clone https://github.com/FlaBBB/uizze.git
 cd uizze/integrations/benchmark
 npm test
 npm run verify
@@ -58,8 +59,10 @@ that must be recorded with the result.
 
 ## Publish a verifiable result
 
-The benchmark deliberately has no self-reported winners. When you have run one
-task under the fixed protocol, open a [benchmark-result intake](https://github.com/uizze/uizze/issues/new) with the completed submission JSON, exact task fingerprint, public implementation evidence, and desktop/mobile checks. A maintainer must verify the evidence before publishing a result; an intake is not a ranking or endorsement.
+The benchmark deliberately has no self-reported winners. The original upstream
+benchmark's [result intake](https://github.com/uizze/uizze/issues/new) accepts
+completed submissions, exact task fingerprints, public implementation
+evidence, and desktop/mobile checks. An intake is not a ranking or endorsement.
 
 ## What the score means
 
@@ -88,11 +91,31 @@ evaluation rules match.
 
 See [METHODOLOGY.md](METHODOLOGY.md) for the full protocol.
 
-## Why UIZZE made this
+## Optional local references and materials
 
-The free benchmark is useful on its own. If you want to make the workflow more
-powerful, [UIZZE](https://uizze.com) gives coding agents access to a large
-catalogue of real web and iOS product patterns through its MCP workflow.
+The benchmark is useful on its own. If a separate UI task needs optional
+reference or material search, install the fork's local stdio MCP runtime:
+
+```bash
+npx --yes --package 'git+https://github.com/FlaBBB/uizze.git#ui-reference-mcp-v1.0.0' ui-reference-mcp install
+```
+
+The global connection key is `ui-reference` for omp, Codex, Claude Code, and
+Cursor. Rerun `~/.local/bin/ui-reference-mcp setup` to repeat provider onboarding or repair
+those connections (the prefix may differ via `UI_REFERENCE_INSTALL_PREFIX`; with `<prefix>/bin` on `PATH`, the bare `ui-reference-mcp` name also works). Configure sources with `~/.local/bin/ui-reference-mcp auth mobbin`,
+`~/.local/bin/ui-reference-mcp auth google-fonts`, or `~/.local/bin/ui-reference-mcp auth iconify`.
+Mobbin uses browser consent, Google Fonts asks for a key in the masked
+terminal prompt, and Iconify requires no key.
+
+The two tools are `find_ui_references` (Mobbin screens, flows, or web sections)
+and `find_ui_materials` (Google Fonts metadata or public Iconify icons). Cite
+references with returned `mobbin_url` values and materials with provider
+`source_url` values. See the [local MCP integration guide](../mcp/) for exact
+inputs and result shapes.
+
+The benchmark itself is retained from the [original Uizze upstream
+repository](https://github.com/uizze/uizze); its scoring protocol and MIT
+license are unchanged.
 
 ## License
 

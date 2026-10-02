@@ -4,11 +4,15 @@ Use these prompts on a real file or route in your project. Replace the example p
 
 ## Install once
 
+Install the skill from this fork:
+
 ```bash
-npx skills add https://uizze.com --skill ui-design
+npx skills add https://github.com/FlaBBB/uizze --skill ui-design
 ```
 
-For a focused review of generic UI, install `anti-ui-slop` instead. Both work without an account or MCP connection. GitHub installs also work: `npx skills add uizze/uizze --skill ui-design`.
+For a focused review of a generic UI, install `anti-ui-slop` with the same
+command and `--skill anti-ui-slop`. Both skills work without an account or MCP
+connection.
 
 ## Billing settings that people can use
 
@@ -43,7 +47,9 @@ user can do next. Preserve our permission logic. Cover pending invites,
 expired invites, read-only users, save failures, and narrow layouts.
 ```
 
-If the authenticated UIZZE MCP is connected, add a specific reference request: “Find up to three relevant full-screen references for role inheritance and restricted actions. Explain the decisions worth adapting to our product.”
+If local reference search is configured, ask a focused question such as:
+“Find up to three relevant references for role inheritance and restricted
+actions. Explain the decisions worth adapting to our product.”
 
 ## A focused review of a generic first draft
 
@@ -67,17 +73,28 @@ and the device sizes supported by the project.
 
 | Agent | How to start |
 | --- | --- |
-| Codex | Install the skill, open the target project, and use one of the prompts above. |
-| Claude Code | Install the skill, or add the plugin with `/plugin marketplace add uizze/uizze` followed by `/plugin install uizze@uizze`. Ask for `uizze:anti-ui-slop` when using the plugin. |
-| Cursor | Install the skill and ask the agent to use `ui-design` or `anti-ui-slop` on a named file or route. |
-| GitHub Copilot | Follow the [UIZZE plugin instructions in Awesome Copilot](https://github.com/github/awesome-copilot/tree/main/plugins/uizze), then ask for `anti-ui-slop`. |
+| Codex | Install `ui-design` or `anti-ui-slop` from the fork and use one of the prompts above. |
+| Claude Code | Install the skill from the fork and use its skill name on a project task. |
+| Cursor | Install the skill from the fork and ask the agent to use it on a named file or route. |
 
-## Add focused reference search
+## Add focused local reference search
 
-Connect the optional [paid MCP](../integrations/mcp) when a real visual question would benefit from examples in UIZZE's 800,000+ web and iOS screens. The server provides `find_ui_references` and `find_ui_materials`.
+When a concrete visual question would benefit from examples, install and
+connect the optional local server:
 
-Name the problem: “invoice table on a narrow viewport” gives the agent a clearer research task than “find inspiration.” Adapt useful decisions to your product's components and content. If retrieval returns nothing, continue from the project.
+```bash
+npx --yes --package 'git+https://github.com/FlaBBB/uizze.git#ui-reference-mcp-v1.0.0' ui-reference-mcp install
+```
 
-[Explore UIZZE →](https://uizze.com/?utm_source=github&utm_medium=repository&utm_campaign=discovery&utm_content=workflow_examples)
+The local stdio server registers as `ui-reference` for omp, Codex, Claude Code,
+and Cursor. It exposes exactly two tools: `find_ui_references` searches Mobbin
+screens, flows, or web sections; `find_ui_materials` searches Google Fonts
+metadata or public Iconify icons. Mobbin consent and Google Fonts key entry
+happen in the terminal; Iconify needs no key. Use `~/.local/bin/ui-reference-mcp setup` to
+rerun provider onboarding or repair the selected global connections (the prefix may differ via `UI_REFERENCE_INSTALL_PREFIX`; with `<prefix>/bin` on `PATH`, the bare `ui-reference-mcp` name also works).
+
+Cite references with the result's `mobbin_url` and materials with their
+provider `source_url`. If a search returns no useful evidence, continue from
+the project.
 
 For a local source check on pull requests, [inspect the Action example](pull-request-check.md).

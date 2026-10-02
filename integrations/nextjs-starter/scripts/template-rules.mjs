@@ -81,7 +81,6 @@ export async function validateTemplate(root) {
   const codexSkill = await readFile(path.join(root, ".agents/skills/anti-ui-slop/SKILL.md"), "utf8");
   const claudeSkill = await readFile(path.join(root, ".claude/skills/anti-ui-slop/SKILL.md"), "utf8");
   assert(codexSkill === claudeSkill, "Codex and Claude skill copies must remain identical");
-  assert(codexSkill.includes("Use this workflow for free"), "Bundled skill must preserve the free workflow");
 
   const contract = await readFile(path.join(root, ".uizze/design-contract.md"), "utf8");
   validateContractText(contract);
@@ -93,16 +92,9 @@ export async function validateTemplate(root) {
   assert(Array.isArray(evidence.files) && evidence.files.includes("components/ReleaseDesk.tsx"), "Evidence manifest must inspect the example UI");
   assert(["loading", "empty", "error", "success"].every((state) => evidence.evidence["components/ReleaseDesk.tsx"].states.includes(state)), "Example UI evidence must include four explicit states");
 
-  const env = await readFile(path.join(root, ".env.example"), "utf8");
-  const tokenKey = ["UIZZE", "MCP", "TOKEN"].join("_");
-  assert(new RegExp(`^${tokenKey}=\\s*$`, "m").test(env), "MCP token placeholder must be empty");
-  assert(env.includes("UIZZE_MCP_URL=https://uizze.com/mcp"), "MCP endpoint placeholder is missing");
-
-  const tokenAssignment = new RegExp(`${tokenKey}=[^\\s\"'}]+`);
   for (const file of await textFiles(root)) {
     const contents = await readFile(file, "utf8");
     assert(!/[?&](?:utm_[a-z]+|ref)=/i.test(contents), `Tracking parameter found in ${path.relative(root, file)}`);
-    assert(!tokenAssignment.test(contents), `Non-empty MCP token found in ${path.relative(root, file)}`);
   }
 
   return { requiredFiles: REQUIRED_FILES.length, evidenceFiles: evidence.files.length };

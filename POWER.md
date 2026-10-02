@@ -1,9 +1,9 @@
 ---
 name: "uizze-ui-slop"
-displayName: "UIZZE UI Design"
-description: "Build product-specific UI with the local product system and optional focused UIZZE references."
+displayName: "Uizze multi-source fork"
+description: "Build product-specific UI with the local product system and optional Mobbin references or Google Fonts/Iconify materials."
 keywords: ["ui design", "frontend ui", "interface", "screen", "design system", "responsive ui", "ui review"]
-author: "UIZZE"
+author: "FlaBBB"
 ---
 
 # Build from the product
@@ -11,10 +11,11 @@ author: "UIZZE"
 Use this power for rendered web or iOS interface work. Read the product brief,
 existing components, tokens, and constraints before choosing a layout.
 
-The free workflow needs no account or MCP connection. If the authenticated
-UIZZE MCP is connected, it exposes `find_ui_references` and
-`find_ui_materials`. Use either only when it answers a concrete unresolved
-question. An empty result is a no-op.
+The free workflow needs no account or MCP connection. The optional local
+`ui-reference-mcp` server exposes `find_ui_references` and
+`find_ui_materials`. Reference search uses Mobbin; material search uses Google
+Fonts for fonts and Iconify for icons. Retrieve them only when they answer a
+concrete unresolved question. An empty result is a no-match.
 
 ## Workflow
 
@@ -27,13 +28,17 @@ question. An empty result is a no-op.
    clipping, overlap, broken controls, inaccessible interaction, or distorted media.
 
 Never copy another product's branding, proprietary text, imagery, or exact
-layout. UIZZE evidence does not replace accessibility, security, correctness,
-or usability review.
+layout. Retrieved evidence does not replace accessibility, security,
+correctness, or usability review.
 
-## Support
+## Optional local MCP
 
-- Product: https://uizze.com
-- Documentation: https://uizze.com/docs
-- Privacy: https://uizze.com/privacy
-- Terms: https://uizze.com/terms
-- Support: business@uizze.com
+Install and connect the global local server with:
+
+```bash
+npx --yes --package 'git+https://github.com/FlaBBB/uizze.git#ui-reference-mcp-v1.0.0' ui-reference-mcp install
+```
+
+The installer configures omp, Codex, Claude Code, and Cursor by default. The
+connection key is `ui-reference`. Use `~/.local/bin/ui-reference-mcp setup` to rerun provider onboarding or repair those connections
+(the prefix may differ via `UI_REFERENCE_INSTALL_PREFIX`; with `<prefix>/bin` on `PATH`, the bare `ui-reference-mcp` name also works). See [`integrations/mcp/`](integrations/mcp/) for Mobbin and materials setup.

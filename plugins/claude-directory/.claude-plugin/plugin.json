@@ -1,14 +1,13 @@
 {
   "name": "uizze",
   "version": "1.3.0",
-  "description": "UI design that stands out",
+  "description": "UI design workflow with Mobbin references and Google Fonts/Iconify materials",
   "author": {
-    "name": "Uizze",
-    "email": "business@uizze.com",
-    "url": "https://uizze.com"
+    "name": "FlaBBB",
+    "url": "https://github.com/FlaBBB/uizze"
   },
-  "homepage": "https://uizze.com",
-  "repository": "https://github.com/uizze/uizze",
+  "homepage": "https://github.com/FlaBBB/uizze",
+  "repository": "https://github.com/FlaBBB/uizze",
   "license": "MIT",
   "keywords": [
     "ui",
